@@ -7,6 +7,7 @@ import {
   HttpCode,
   HttpException,
   HttpRedirectResponse,
+  HttpStatus,
   Ip,
   Param,
   Post,
@@ -22,6 +23,34 @@ import { CreateCatDto } from 'src/cats/dtos/create-cat.dto';
 
 @Controller('/cats')
 export class CatsController {
+  /**
+   * Library-Specific Approach
+   * Directly manipulate express res object. (Not Recommended)
+   */
+  @Post('express')
+  createWithExpress(@Res() res: Response) {
+    res.status(HttpStatus.CREATED).send();
+  }
+
+  @Get('express')
+  findAllWithExpress(@Res() res: Response) {
+    res.status(HttpStatus.OK).json([]);
+  }
+
+  @Post('express/passthrough')
+  createWithExpressPassthrough(@Res({ passthrough: true }) res: Response) {
+    res.status(HttpStatus.CREATED); // no need to res.send() thanks to passthrough
+
+    return `Creating with Express`;
+  }
+
+  @Get('express/passthrough')
+  findAllWithExpressPassthrough(@Res({ passthrough: true }) res: Response) {
+    res.status(HttpStatus.OK); // no need to res.json() thanks to passthrough
+
+    return [];
+  }
+
   // assume GET: /cats?breed=retriever&age=23
   @Get()
   findAll(
