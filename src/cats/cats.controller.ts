@@ -6,10 +6,12 @@ import {
   Headers,
   HttpCode,
   HttpException,
+  HttpRedirectResponse,
   Ip,
   Param,
   Post,
   Query,
+  Redirect,
   Req,
   Res,
   Session,
@@ -103,6 +105,22 @@ export class CatsController {
   @Header('Cache-Control', 'max-age=1800')
   sendResponseWithCacheControlHeader(): string {
     return `This route returns a reponse with a max-age of 1800`;
+  }
+
+  @Get('redirect')
+  @Redirect('https://google.com', 301)
+  redirectToGoogle(): string {
+    return `This route redirects to google.com`;
+  }
+
+  @Get('conditional-redirect')
+  @Redirect('https://google.com', 301)
+  redirectToGoogleConditionally(
+    @Query('shouldRedirect') shouldRedirect: string,
+  ): HttpRedirectResponse | void {
+    if (shouldRedirect === 'true') {
+      return { url: 'https://nestjs.com', statusCode: 301 }; // override url
+    }
   }
 
   // assume: GET: /cats/1234
