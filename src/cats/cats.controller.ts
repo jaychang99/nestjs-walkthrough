@@ -47,8 +47,20 @@ export class CatsController {
     return `this function returns all cats`;
   }
 
+  /**
+   * Route Wildcards
+   * CAUTION: static paths must be defined above any dynamic paths such as GET :id.
+   */
+  // /cats/abcd
+  // /cats/abefcd
+  // /cats/abyzx1234cd
+  @Get('ab*cd')
+  getAbcd(): string {
+    return `This route catches all paths that starts with /cats/ab and ends with cd`;
+  }
+
   // assume: GET: /cats/1234
-  @Get('/:id')
+  @Get(':id')
   findOne(
     @Param() params: Request['params'], // req.params (PATH PARAMS)
     @Param('id') catId: string, // req.params.id
