@@ -18,6 +18,7 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { Observable, of } from 'rxjs';
+import { CreateCatDto } from 'src/cats/dtos/create-cat.dto';
 
 @Controller('/cats')
 export class CatsController {
@@ -155,11 +156,11 @@ export class CatsController {
   // assume POST: /cats
   @Post()
   create(
-    @Body() body: Request['body'], // req.body
+    @Body() createCatDto: CreateCatDto, // req.body
     @Body('age') age: number, // req.body.age
     @Body('breed') breed: string, // req.body.breed
   ): string {
-    console.log('body', body); // { age: 8, breed: 'retriever' }
+    console.log('createCatDto', createCatDto); // { age: 8, breed: 'retriever', name: 'apple' }
     console.log('age', age); // 8 NOTE: that this is of type number (body is automatically parsed)
     console.log(typeof age); // 'number'
     console.log('breed', breed); // 'retriever'
