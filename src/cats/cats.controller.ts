@@ -123,6 +123,18 @@ export class CatsController {
     return `This route returns a reponse with a max-age of 1800`;
   }
 
+  @Get('set-cache-dynamically')
+  sendResponseWithCacheControlHeaderDynamically(
+    @Res({ passthrough: true }) res: Response, // with no passthrough: true, response hangs unless explicitly sent by res.json() or res.send(), etc.
+    @Query('isCached') isCached: string,
+  ): string {
+    if (isCached === 'true') {
+      res.setHeader('Cache-Control', 'max-age=1800');
+    }
+
+    return `This route sets max-age conditionally based on 'isCached' query string parameter`;
+  }
+
   @Get('redirect')
   @Redirect('https://google.com', 301)
   redirectToGoogle(): string {
