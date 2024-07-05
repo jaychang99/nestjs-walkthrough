@@ -17,6 +17,7 @@ import {
   Session,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { Observable, of } from 'rxjs';
 
 @Controller('/cats')
 export class CatsController {
@@ -51,6 +52,20 @@ export class CatsController {
     console.log('session', session); // ...
 
     return `this function returns all cats`;
+  }
+
+  /**
+   * Asynchronicity
+   */
+  @Get('asynchronous')
+  async findAllAsync(): Promise<any[]> {
+    return [];
+  }
+
+  // return rxjs Observable streams
+  @Get('observable-stream')
+  findAllObservableStream(): Observable<any[]> {
+    return of([]);
   }
 
   /**
