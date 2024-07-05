@@ -3,14 +3,17 @@ import {
   Controller,
   Get,
   Headers,
+  HttpCode,
+  HttpException,
   Ip,
   Param,
   Post,
   Query,
   Req,
+  Res,
   Session,
 } from '@nestjs/common';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 
 @Controller('/cats')
 export class CatsController {
@@ -57,6 +60,42 @@ export class CatsController {
   @Get('ab*cd')
   getAbcd(): string {
     return `This route catches all paths that starts with /cats/ab and ends with cd`;
+  }
+
+  /**
+   * Varying HTTP Status Codes
+   */
+  @Get('no-content')
+  @HttpCode(204)
+  sendNoContentResponse(): void {
+    // sends nothing
+  }
+
+  @Get('accepted')
+  @HttpCode(202)
+  sendAcceptedResponse(): string {
+    return `This route sends 202 Accepted response. `;
+  }
+
+  @Get('/forbidden')
+  @HttpCode(403)
+  sendForbiddenResponse(): string {
+    return `This route send 403 Forbidden response. `;
+  }
+
+  @Get('/dynamic-response')
+  sendDynamicResponse(
+    @Query('isValid') isValid: string,
+    @Res({ passthrough: true }) res: Response,
+  ): string {
+    // This route sends dynamic response based on query param of 'isValid'.
+
+    if (isValid === 'true') {
+      res.statusCode = 203; // manually set statusCode of underlying response object
+      return `Valid Response`;
+    }
+
+    throw new HttpException('Bad Request', 400); // OR throw exceptions.
   }
 
   // assume: GET: /cats/1234
