@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Header,
   Headers,
   HttpCode,
   HttpException,
@@ -96,6 +97,12 @@ export class CatsController {
     }
 
     throw new HttpException('Bad Request', 400); // OR throw exceptions.
+  }
+
+  @Get('set-cache')
+  @Header('Cache-Control', 'max-age=1800')
+  sendResponseWithCacheControlHeader(): string {
+    return `This route returns a reponse with a max-age of 1800`;
   }
 
   // assume: GET: /cats/1234
