@@ -51,6 +51,9 @@ export class CatsController {
     return [];
   }
 
+  /**
+   * Exploring some commonly used decorators for parsing request.
+   */
   // assume GET: /cats?breed=retriever&age=23
   @Get()
   findAll(
@@ -146,6 +149,9 @@ export class CatsController {
     throw new HttpException('Bad Request', 400); // OR throw exceptions.
   }
 
+  /**
+   * Setting response headers per endpoint.
+   */
   @Get('set-cache')
   @Header('Cache-Control', 'max-age=1800')
   sendResponseWithCacheControlHeader(): string {
@@ -164,6 +170,9 @@ export class CatsController {
     return `This route sets max-age conditionally based on 'isCached' query string parameter`;
   }
 
+  /**
+   * Setting Redirects
+   */
   @Get('redirect')
   @Redirect('https://google.com', 301)
   redirectToGoogle(): string {
@@ -180,6 +189,9 @@ export class CatsController {
     }
   }
 
+  /**
+   * Path Params
+   */
   // assume: GET: /cats/1234
   @Get(':id')
   findOne(
@@ -194,6 +206,9 @@ export class CatsController {
     return `this function returns #${id} cat. `;
   }
 
+  /**
+   * DTOs, post decorator
+   */
   // assume POST: /cats
   @Post()
   create(
