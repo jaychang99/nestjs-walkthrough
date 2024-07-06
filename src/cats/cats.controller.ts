@@ -27,6 +27,21 @@ import { Cat } from 'src/cats/interfaces/cat.interface';
 export class CatsController {
   constructor(private catsService: CatsService) {} // same as this.catsService = catsService thanks to `private` keyword
   /**
+   * Exception Filters
+   */
+  @Get('/http-exception/forbidden')
+  throwHttpExceptionForbidden() {
+    // throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    throw new HttpException(
+      { error: 'cannot access forbidden resources', errorCode: 'E110011' },
+      HttpStatus.FORBIDDEN,
+      {
+        cause: 'user tried to gain admin privileges', // not serialized as response object. Only for debugging purposes.
+      },
+    );
+  }
+
+  /**
    * Library-Specific Approach
    * Directly manipulate express res object. (Not Recommended)
    */
