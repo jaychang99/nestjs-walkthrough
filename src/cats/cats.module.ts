@@ -6,4 +6,9 @@ import { CatsService } from 'src/cats/cats.service';
   providers: [CatsService],
   controllers: [CatsController],
 })
-export class CatsModule {}
+export class CatsModule {
+  /**
+   * If needed, Dependency Injection can also be used in modules for configuration purposes.
+   */
+  constructor(private catsService: CatsService) {}
+}
