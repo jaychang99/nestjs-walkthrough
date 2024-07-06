@@ -1,10 +1,12 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { CatsController } from 'src/cats/cats.controller';
 import { CatsService } from 'src/cats/cats.service';
 
+@Global()
 @Module({
   providers: [CatsService],
   controllers: [CatsController],
+  exports: [CatsService],
 })
 export class CatsModule {
   /**
