@@ -5,6 +5,7 @@ import { CatsController } from 'src/cats/cats.controller';
 import { AdminController } from 'src/admin/admin.controller';
 import { AccountController } from 'src/account/account.controller';
 import { CatsService } from 'src/cats/cats.service';
+import { HttpService } from 'src/http/http.service';
 
 @Module({
   imports: [],
@@ -14,6 +15,6 @@ import { CatsService } from 'src/cats/cats.service';
     AdminController,
     AccountController,
   ],
-  providers: [AppService, CatsService],
+  providers: [AppService, CatsService, HttpService],
 })
 export class AppModule {}
