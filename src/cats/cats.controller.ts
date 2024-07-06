@@ -19,10 +19,13 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { Observable, of } from 'rxjs';
+import { CatsService } from 'src/cats/cats.service';
 import { CreateCatDto } from 'src/cats/dtos/create-cat.dto';
+import { Cat } from 'src/cats/interfaces/cat.interface';
 
 @Controller('/cats')
 export class CatsController {
+  constructor(private catsService: CatsService) {} // same as this.catsService = catsService thanks to `private` keyword
   /**
    * Library-Specific Approach
    * Directly manipulate express res object. (Not Recommended)
@@ -56,7 +59,7 @@ export class CatsController {
    */
   // assume GET: /cats?breed=retriever&age=23
   @Get()
-  findAll(
+  async findAll(
     @Req() request: Request, // req
 
     @Query() queries: Request['query'], // req.query (QUERY STRING PARAMS)
@@ -69,7 +72,7 @@ export class CatsController {
     @Ip() ip: Request['ip'], // req.ip
 
     @Session() session?: any, // what is the type of the session?
-  ): string {
+  ): Promise<Cat[]> {
     console.log('request', request); // ...
 
     console.log('queries', queries); // { breed: 'retriever', age: '23' }
@@ -84,7 +87,7 @@ export class CatsController {
 
     console.log('session', session); // ...
 
-    return `this function returns all cats`;
+    return this.catsService.findAll();
   }
 
   /**
@@ -211,16 +214,16 @@ export class CatsController {
    */
   // assume POST: /cats
   @Post()
-  create(
+  async create(
     @Body() createCatDto: CreateCatDto, // req.body
     @Body('age') age: number, // req.body.age
     @Body('breed') breed: string, // req.body.breed
-  ): string {
+  ) {
     console.log('createCatDto', createCatDto); // { age: 8, breed: 'retriever', name: 'apple' }
     console.log('age', age); // 8 NOTE: that this is of type number (body is automatically parsed)
     console.log(typeof age); // 'number'
     console.log('breed', breed); // 'retriever'
 
-    return `this function creates a new cat`;
+    return this.catsService.create(createCatDto);
   }
 }
