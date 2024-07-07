@@ -10,7 +10,6 @@ import {
   HttpStatus,
   Ip,
   Param,
-  ParseIntPipe,
   Post,
   Query,
   Redirect,
@@ -26,6 +25,7 @@ import { CreateCatDto } from 'src/cats/dtos/create-cat.dto';
 import { Cat } from 'src/cats/interfaces/cat.interface';
 import { HttpExceptionFilter } from 'src/common/exception-filters/http-exception.filter';
 import { AdminAccessException } from 'src/common/exceptions/admin-access.exception';
+import { ValidationPipe } from 'src/common/pipes/validation.pipe';
 
 @Controller('/cats')
 export class CatsController {
@@ -229,7 +229,7 @@ export class CatsController {
   @Get(':id')
   findOne(
     @Param() params: Request['params'], // req.params (PATH PARAMS)
-    @Param('id', ParseIntPipe) catId: number, // req.params.id
+    @Param('id', ValidationPipe) catId: number, // req.params.id
   ): string {
     console.log('params', params); // { id: '1234' }
     console.log('catId', catId); // '1234'
