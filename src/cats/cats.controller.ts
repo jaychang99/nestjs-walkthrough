@@ -22,6 +22,7 @@ import { Observable, of } from 'rxjs';
 import { CatsService } from 'src/cats/cats.service';
 import { CreateCatDto } from 'src/cats/dtos/create-cat.dto';
 import { Cat } from 'src/cats/interfaces/cat.interface';
+import { AdminAccessException } from 'src/common/exceptions/admin-access.exception';
 
 @Controller('/cats')
 export class CatsController {
@@ -39,6 +40,11 @@ export class CatsController {
         cause: 'user tried to gain admin privileges', // not serialized as response object. Only for debugging purposes.
       },
     );
+  }
+
+  @Get('/http-exception/admin-access')
+  throwHttpExceptionAdminAccess() {
+    throw new AdminAccessException();
   }
 
   /**
