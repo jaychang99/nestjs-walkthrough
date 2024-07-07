@@ -16,12 +16,14 @@ import {
   Req,
   Res,
   Session,
+  UseFilters,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { Observable, of } from 'rxjs';
 import { CatsService } from 'src/cats/cats.service';
 import { CreateCatDto } from 'src/cats/dtos/create-cat.dto';
 import { Cat } from 'src/cats/interfaces/cat.interface';
+import { HttpExceptionFilter } from 'src/common/exception-filters/http-exception.filter';
 import { AdminAccessException } from 'src/common/exceptions/admin-access.exception';
 
 @Controller('/cats')
@@ -45,6 +47,12 @@ export class CatsController {
   @Get('/http-exception/admin-access')
   throwHttpExceptionAdminAccess() {
     throw new AdminAccessException();
+  }
+
+  @Get('http-exception/custom-filter')
+  @UseFilters(HttpExceptionFilter)
+  throwHttpExceptionUsingCustomFilter() {
+    throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
   }
 
   /**
