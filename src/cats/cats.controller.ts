@@ -10,6 +10,7 @@ import {
   HttpStatus,
   Ip,
   Param,
+  ParseIntPipe,
   Post,
   Query,
   Redirect,
@@ -228,7 +229,7 @@ export class CatsController {
   @Get(':id')
   findOne(
     @Param() params: Request['params'], // req.params (PATH PARAMS)
-    @Param('id') catId: string, // req.params.id
+    @Param('id', ParseIntPipe) catId: number, // req.params.id
   ): string {
     console.log('params', params); // { id: '1234' }
     console.log('catId', catId); // '1234'
